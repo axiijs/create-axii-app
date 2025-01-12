@@ -1,6 +1,6 @@
 {
   "name": "create-axii-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CLI tool to create new Axii.js applications",
   "main": "index.js",
   "bin": {
@@ -10,7 +10,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["axii", "cli", "create-app"],
+  "keywords": [
+    "axii",
+    "cli",
+    "create-app"
+  ],
   "author": "Axii.js Team",
   "license": "MIT",
   "dependencies": {
