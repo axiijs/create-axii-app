@@ -13,29 +13,46 @@ async function main() {
   const targetDir = process.argv[2] || '.';
   
   try {
-    // Check if directory exists and is not empty
-    if (fs.existsSync(targetDir) && fs.readdirSync(targetDir).length > 0) {
-      console.error(chalk.red(`Error: Directory "${targetDir}" already exists and is not empty`));
-      process.exit(1);
+    // Check if a folder name was provided
+    const isFolderNameProvided = process.argv[2] !== undefined;
+    
+    if (isFolderNameProvided) {
+      // Check if directory exists
+      if (fs.existsSync(targetDir)) {
+        // Check if directory is not empty
+        if (fs.readdirSync(targetDir).length > 0) {
+          console.error(chalk.red(`警告: 文件夹 "${targetDir}" 已存在且不为空，终止下载。`));
+          process.exit(1);
+        }
+      } else {
+        // Create directory if it doesn't exist
+        console.log(chalk.blue(`创建文件夹 "${targetDir}"...`));
+        fs.ensureDirSync(targetDir);
+      }
+    } else {
+      // No folder name provided, use current directory
+      if (fs.readdirSync(targetDir).length > 0) {
+        console.error(chalk.red('警告: 当前目录不为空，终止下载。'));
+        process.exit(1);
+      }
     }
-
-    // Create directory if it doesn't exist
-    fs.ensureDirSync(targetDir);
 
     // Clone the boilerplate repository
     console.log(chalk.blue('Downloading template...'));
-    execSync(`git clone --depth 1 https://github.com/axiijs/boilerplate.git ${targetDir}`, { stdio: 'inherit' });
+    execSync(`git clone --depth 1 --branch main https://github.com/axiijs/boilerplate.git ${targetDir}`, { stdio: 'inherit' });
 
     // Remove .git directory
     fs.removeSync(path.join(targetDir, '.git'));
 
+    // Install dependencies
+    console.log(chalk.blue('\nInstalling dependencies...\n'));
+    execSync('npm install', { stdio: 'inherit', cwd: targetDir });
+
     console.log(chalk.green('\nSuccess! Created Axii.js app at'), chalk.cyan(targetDir));
     console.log('\nInside that directory, you can run several commands:');
-    console.log('\n  npm start');
+    console.log('\n  npm run dev');
     console.log('    Starts the development server.');
-    console.log('\n  npm run build');
-    console.log('    Builds the app for production.\n');
-    console.log('Happy hacking!\n');
+    console.log('\nHappy hacking!\n');
 
   } catch (error) {
     console.error(chalk.red('Error:'), error);
