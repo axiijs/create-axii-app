@@ -48,11 +48,11 @@ async function main() {
     console.log(chalk.blue('\nInstalling dependencies...\n'));
     execSync('npm install', { stdio: 'inherit', cwd: targetDir });
 
-    console.log(chalk.green('\nSuccess! Created Axii.js app at'), chalk.cyan(targetDir));
-    console.log('\nInside that directory, you can run several commands:');
+    console.log(chalk.green('\n成功！') + ' Axii.js 应用已创建于: ' + chalk.cyan(targetDir));
+    console.log('\n在该目录中，你可以运行以下命令：');
     console.log('\n  npm run dev');
-    console.log('    Starts the development server.');
-    console.log('\nHappy hacking!\n');
+    console.log('    启动开发服务器');
+    console.log('\n开始愉快的开发吧！\n');
 
   } catch (error) {
     console.error(chalk.red('Error:'), error);
